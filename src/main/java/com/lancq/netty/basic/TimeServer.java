@@ -8,40 +8,43 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 /**
  * @author lancq
+ * @date 2019/8/4
  */
 public class TimeServer {
+	public static void main(String[] args) throws Exception {
+		//
+		int port = 8080;
+		new TimeServer().bind(port);
+	}
 
-    public static void main(String[] args) throws Exception {
-        int port = 8080;
-        new TimeServer().bind(port);
-    }
+	public void bind(int port) throws Exception {
+		// 配置服务端NIO线程组
+		EventLoopGroup boss = new NioEventLoopGroup();
+		EventLoopGroup worker = new NioEventLoopGroup();
+		try {
+			ServerBootstrap b = new ServerBootstrap();
+			b.group(boss, worker);
+			b.channel(NioServerSocketChannel.class); //注意与客户端的区别，NioSocketChannel
+			b.option(ChannelOption.SO_BACKLOG, 1024);
+			b.childHandler(new ChildChannelHandler());
 
-    public void bind(int port) throws Exception {
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+			// 绑定端口，同步等待成功
+			ChannelFuture f = b.bind(port).sync();
+			System.out.println("服务端成功启动，port=" + port);
 
-        try {
-            ServerBootstrap b = new ServerBootstrap();
-            b.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class)
-                    .option(ChannelOption.SO_BACKLOG, 1024)
-                    .childHandler(new ChildChannelHandler());
-            //绑定端口，同步等待成功
-            ChannelFuture f = b.bind(port).sync();
+			// 等待服务端监听端口关闭
+			f.channel().closeFuture().sync();
+		} finally {
+			// 优雅退出，释放线程资源
+			boss.shutdownGracefully();
+			worker.shutdownGracefully();
+		}
+	}
 
-            //等待服务端监听端口关闭
-            f.channel().closeFuture().sync();
-        } finally {
-            //优雅的退出，释放线程资源
-            bossGroup.shutdownGracefully();
-            workerGroup.shutdownGracefully();
-        }
-    }
-
-    private class ChildChannelHandler extends ChannelInitializer<SocketChannel> {
-        @Override
-        protected void initChannel(SocketChannel socketChannel) throws Exception {
-            socketChannel.pipeline().addLast(new TimeServerHandler());
-        }
-    }
+	private class ChildChannelHandler extends ChannelInitializer<SocketChannel> {
+		@Override
+		protected void initChannel(SocketChannel socketChannel) throws Exception {
+			socketChannel.pipeline().addLast(new TimeServerHandler());
+		}
+	}
 }

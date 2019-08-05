@@ -1,4 +1,4 @@
-package com.lancq.netty.basic;
+package com.lancq.netty.frame.delimiter;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -11,18 +11,17 @@ import java.util.Date;
  * @author lancq
  * @date 2019/8/4
  **/
-public class TimeServerHandler extends ChannelHandlerAdapter {
+public class EchoServerHandler extends ChannelHandlerAdapter {
+    private int counter;
+
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf buf = (ByteBuf) msg;
-        byte[] req = new byte[buf.readableBytes()];
-        buf.readBytes(req);
-        String body = new String(req, "UTF-8");
-        System.out.println("The time server receive order : " + body);
-        String currentTime = "QUERY TIME ORDER".equalsIgnoreCase(body) ? new Date().toString() : "BAD ORDER";
-        ByteBuf resp = Unpooled.copiedBuffer(currentTime.getBytes());
-        ctx.write(resp);
-
+        String body = (String) msg;
+        System.out.println("This is  : " + ++counter + " times receive client : [" + body + "]");
+        body += "$_";
+        ByteBuf resp = Unpooled.copiedBuffer(body.getBytes());
+        ctx.writeAndFlush(resp);
     }
 
     @Override
