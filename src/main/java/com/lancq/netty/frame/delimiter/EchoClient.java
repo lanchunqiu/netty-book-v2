@@ -32,7 +32,7 @@ public class EchoClient {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            //Ê¹ÓÃ·Ö¸ô·û$_£¬½â¾öÕ³°ü²ğ°üÎÊÌâ
+                            //ä½¿ç”¨åˆ†éš”ç¬¦$_ï¼Œè§£å†³ç²˜åŒ…æ‹†åŒ…é—®é¢˜
                             ByteBuf delimiter = Unpooled.copiedBuffer("$_".getBytes());
                             ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, delimiter));
                             ch.pipeline().addLast(new StringDecoder());
@@ -41,7 +41,7 @@ public class EchoClient {
                         }
                     });
             ChannelFuture f = b.connect(host, port).sync();
-            System.out.println("¿Í»§¶ËÁ¬½Ó³É¹¦£¬port = " + port);
+            System.out.println("å®¢æˆ·ç«¯è¿æ¥æˆåŠŸï¼Œport = " + port);
 
             f.channel().closeFuture().sync();
         } finally {

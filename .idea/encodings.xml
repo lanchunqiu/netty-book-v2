@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8" addBOMForNewFiles="with NO BOM">
+    <file url="file://$PROJECT_DIR$/src/main/java/com/lancq/netty/basic/TimeClient.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/lancq/netty/basic/TimeClientHandler.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/lancq/netty/basic/TimeServer.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/lancq/netty/frame/correct/TimeClient.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/lancq/netty/frame/correct/TimeServer.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/lancq/netty/frame/delimiter/EchoClient.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/lancq/netty/frame/delimiter/EchoServer.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/lancq/netty/frame/fault/TimeClient.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/lancq/netty/frame/fault/TimeServer.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/lancq/netty/frame/fixlen/EchoServer.java" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

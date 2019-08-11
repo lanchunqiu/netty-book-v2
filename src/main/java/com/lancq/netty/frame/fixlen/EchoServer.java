@@ -26,7 +26,7 @@ public class EchoServer {
     }
 
     public void bind(int port) throws InterruptedException {
-        // ÅäÖÃ·şÎñ¶ËNIOÏß³Ì×é
+        // é…ç½®æœåŠ¡ç«¯NIOçº¿ç¨‹ç»„
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
@@ -38,7 +38,7 @@ public class EchoServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            //Ê¹ÓÃ¹Ì¶¨Ö¡³¤¶È£¬½â¾öÕ³°ü²ğ°üÎÊÌâ
+                            //ä½¿ç”¨å›ºå®šå¸§é•¿åº¦ï¼Œè§£å†³ç²˜åŒ…æ‹†åŒ…é—®é¢˜
                             ch.pipeline().addLast(new FixedLengthFrameDecoder(20));
                             ch.pipeline().addLast(new StringDecoder());
 
@@ -47,7 +47,7 @@ public class EchoServer {
                     });
 
             ChannelFuture f = b.bind(port).sync();
-            System.out.println("·şÎñ¶ËÒÑÆô¶¯£¬port = " + port);
+            System.out.println("æœåŠ¡ç«¯å·²å¯åŠ¨ï¼Œport = " + port);
 
             f.channel().closeFuture().sync();
         } finally {

@@ -32,7 +32,7 @@ public class TimeClient {
                         }
                     });
             ChannelFuture f = b.connect(host, port).sync();
-            System.out.println("客户端连接成功，port = " + port);
+            System.out.println("瀹㈡埛绔繛鎺ユ垚鍔燂紝port = " + port);
 
             f.channel().closeFuture().sync();
         } finally {

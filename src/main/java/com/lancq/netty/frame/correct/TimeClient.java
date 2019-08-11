@@ -30,7 +30,7 @@ public class TimeClient {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            //使用换行符，解决粘包拆包问题
+                            //浣跨敤鎹㈣绗︼紝瑙ｅ喅绮樺寘鎷嗗寘闂
                             ch.pipeline().addLast(new LineBasedFrameDecoder(1024));
                             ch.pipeline().addLast(new StringDecoder());
 
@@ -38,7 +38,7 @@ public class TimeClient {
                         }
                     });
             ChannelFuture f = b.connect(host, port).sync();
-            System.out.println("客户端连接成功，port = " + port);
+            System.out.println("瀹㈡埛绔繛鎺ユ垚鍔燂紝port = " + port);
 
             f.channel().closeFuture().sync();
         } finally {

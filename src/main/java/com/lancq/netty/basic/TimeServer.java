@@ -18,24 +18,24 @@ public class TimeServer {
 	}
 
 	public void bind(int port) throws Exception {
-		// ÅäÖÃ·şÎñ¶ËNIOÏß³Ì×é
+		// é…ç½®æœåŠ¡ç«¯NIOçº¿ç¨‹ç»„
 		EventLoopGroup boss = new NioEventLoopGroup();
 		EventLoopGroup worker = new NioEventLoopGroup();
 		try {
 			ServerBootstrap b = new ServerBootstrap();
 			b.group(boss, worker);
-			b.channel(NioServerSocketChannel.class); //×¢ÒâÓë¿Í»§¶ËµÄÇø±ğ£¬NioSocketChannel
+			b.channel(NioServerSocketChannel.class); //æ³¨æ„ä¸å®¢æˆ·ç«¯çš„åŒºåˆ«ï¼ŒNioSocketChannel
 			b.option(ChannelOption.SO_BACKLOG, 1024);
 			b.childHandler(new ChildChannelHandler());
 
-			// °ó¶¨¶Ë¿Ú£¬Í¬²½µÈ´ı³É¹¦
+			// ç»‘å®šç«¯å£ï¼ŒåŒæ­¥ç­‰å¾…æˆåŠŸ
 			ChannelFuture f = b.bind(port).sync();
-			System.out.println("·şÎñ¶Ë³É¹¦Æô¶¯£¬port=" + port);
+			System.out.println("æœåŠ¡ç«¯æˆåŠŸå¯åŠ¨ï¼Œport=" + port);
 
-			// µÈ´ı·şÎñ¶Ë¼àÌı¶Ë¿Ú¹Ø±Õ
+			// ç­‰å¾…æœåŠ¡ç«¯ç›‘å¬ç«¯å£å…³é—­
 			f.channel().closeFuture().sync();
 		} finally {
-			// ÓÅÑÅÍË³ö£¬ÊÍ·ÅÏß³Ì×ÊÔ´
+			// ä¼˜é›…é€€å‡ºï¼Œé‡Šæ”¾çº¿ç¨‹èµ„æº
 			boss.shutdownGracefully();
 			worker.shutdownGracefully();
 		}

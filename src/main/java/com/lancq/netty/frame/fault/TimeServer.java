@@ -34,7 +34,7 @@ public class TimeServer {
                     });
 
             ChannelFuture f = b.bind(port).sync();
-            System.out.println("服务端已启动，port = " + port);
+            System.out.println("鏈嶅姟绔凡鍚姩锛宲ort = " + port);
 
             f.channel().closeFuture().sync();
         } finally {

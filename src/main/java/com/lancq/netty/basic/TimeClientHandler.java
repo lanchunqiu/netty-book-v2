@@ -20,7 +20,7 @@ public class TimeClientHandler extends ChannelHandlerAdapter {
     }
 
     /**
-     *  µ±¿Í»§¶ËÓë·şÎñ¶ËTCPÁ´Â·½¨Á¢³É¹¦Ö®ºó£¬NettyµÄNIOÏß³Ì»áµ÷ÓÃchannelActive·½·¨
+     *  å½“å®¢æˆ·ç«¯ä¸æœåŠ¡ç«¯TCPé“¾è·¯å»ºç«‹æˆåŠŸä¹‹åï¼ŒNettyçš„NIOçº¿ç¨‹ä¼šè°ƒç”¨channelActiveæ–¹æ³•
      * @param
      * @return
      **/
@@ -30,7 +30,7 @@ public class TimeClientHandler extends ChannelHandlerAdapter {
     }
 
     /**
-     * µ±·şÎñ¶Ë·µ»ØÓ¦´ğÏûÏ¢ÊÇ£¬channelRead·½·¨±»µ÷ÓÃ
+     * å½“æœåŠ¡ç«¯è¿”å›åº”ç­”æ¶ˆæ¯æ˜¯ï¼ŒchannelReadæ–¹æ³•è¢«è°ƒç”¨
      * @param
      * @return
      **/
