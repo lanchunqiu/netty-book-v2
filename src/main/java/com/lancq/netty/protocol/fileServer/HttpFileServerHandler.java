@@ -6,7 +6,6 @@ import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
 import io.netty.util.CharsetUtil;
-
 import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,7 +35,7 @@ public class HttpFileServerHandler extends SimpleChannelInboundHandler<FullHttpR
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
-        if (!request.getDecoderResult().isFailure()) {
+        if (!request.getDecoderResult().isSuccess()) {
             sendError(ctx, HttpResponseStatus.BAD_REQUEST);
             return;
         }
@@ -46,12 +45,15 @@ public class HttpFileServerHandler extends SimpleChannelInboundHandler<FullHttpR
             return;
         }
         final String uri = request.getUri();
-        final  String path = sanitizeUri(uri);
+        System.out.println("uri=" + uri);
+        final String path = sanitizeUri(uri);
+        System.out.println("path=" + path);
         if (path == null) {
             sendError(ctx, HttpResponseStatus.FORBIDDEN);
             return;
         }
         File file = new File(path);
+        System.out.println("file=" + file.getName());
         if (file.isHidden() || !file.exists()) {
             sendError(ctx, HttpResponseStatus.NOT_FOUND);
             return ;
@@ -119,7 +121,7 @@ public class HttpFileServerHandler extends SimpleChannelInboundHandler<FullHttpR
 
     private String sanitizeUri(String uri) {
         try {
-            uri = URLDecoder.decode(url, "UTF-8");
+            uri = URLDecoder.decode(uri, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             try {
                 uri = URLDecoder.decode(uri, "ISO-8859-1");
@@ -134,11 +136,15 @@ public class HttpFileServerHandler extends SimpleChannelInboundHandler<FullHttpR
             return null;
         }
         uri = uri.replace('/', File.separatorChar);
-        if (uri.contains(File.separator + '.') || uri.contains('.' + File.separator) || uri.endsWith(".")
+        if (uri.contains(File.separator + '.')
+                || uri.contains('.' + File.separator)
+                || uri.startsWith(".")
+                || uri.endsWith(".")
                 || INSECURE_URI.matcher(uri).matches()) {
             return null;
         }
-        return System.getProperty("user.dir") + File.separator + uri;
+        uri = System.getProperty("user.dir") + File.separator + uri;
+        return uri;
     }
 
     private static void sendError(ChannelHandlerContext context, HttpResponseStatus status) {
@@ -151,12 +157,9 @@ public class HttpFileServerHandler extends SimpleChannelInboundHandler<FullHttpR
         response.headers().set(CONTENT_TYPE, mimetypesFileTypeMap.getContentType(file.getPath()));
 
     }
-    /*private void setContentLength(HttpResponse response, long fileLength) {
-
-    }*/
 
     private void sendRedirect(ChannelHandlerContext ctx, String newUri) {
-        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, OK);
+        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, FOUND);
         response.headers().set(LOCATION, newUri);
         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
@@ -187,7 +190,7 @@ public class HttpFileServerHandler extends SimpleChannelInboundHandler<FullHttpR
             }
             buf.append("<li>链接：<a href=\"");
             buf.append(name);
-            buf.append("/>");
+            buf.append("\">");
             buf.append(name);
             buf.append("</a></li>\r\n");
         }
